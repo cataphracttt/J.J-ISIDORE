@@ -92,8 +92,8 @@ function draw(){const f=p*(N-1),i=Math.floor(f),t=f-i;ctx.globalAlpha=1;ctx.draw
   const o=1-ss(.06,.5,p),io=ss(.8,1,p);
   john.style.opacity=jane.style.opacity=o;isi.style.opacity=io;
   john.classList.toggle("hit",o>.6);jane.classList.toggle("hit",o>.6);isi.classList.toggle("hit",io>.6)}
-function tick(now){const dt=Math.min(.05,(now-last)/1000||.016);last=now;
-  p+=(target-p)*(1-Math.exp(-dt*5.5));if(Math.abs(target-p)<.0004)p=target;
+function tick(now){const dt=Math.max(.001,Math.min(.05,(now-last)/1000||.016));last=now;
+  p+=(target-p)*(1-Math.exp(-dt*5.5));p=Math.min(1,Math.max(0,p));if(Math.abs(target-p)<.0004)p=target;
   if(ready)draw();raf=p===target?0:requestAnimationFrame(tick)}
 function kick(){if(!raf){last=performance.now();raf=requestAnimationFrame(tick)}}
 function aim(x,y){if(body.dataset.v!=="a")return;
