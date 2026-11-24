@@ -32,10 +32,10 @@ body[data-v=a] #sw a[href="#a"],body[data-v=b] #sw a[href="#b"]{background:#000}
 #nav{position:absolute;right:2.7cqw;top:86.3%;transform:translateY(-50%);display:flex;gap:2.45cqw;margin:0;padding:0;list-style:none}
 #nav li{position:relative}
 #nav>li>a{display:block;padding:1.2em 0;margin:-1.2em 0;transition:opacity .4s ease}
-#nav:hover>li>a{opacity:.62}#nav>li:hover>a,#nav>li.open>a{opacity:1}
+
 #yr{position:absolute;right:2.7cqw;top:93%;transform:translateY(-50%)}
 .dd{position:absolute;left:0;top:50%;width:100%;height:0}
-.dd::before{content:"";position:absolute;left:0;bottom:0;width:11em;height:6.4em}
+.dd::before{content:"";position:absolute;left:0;bottom:0;width:11em;height:6.4em;pointer-events:none}.coll:hover .dd::before,.coll.open .dd::before{pointer-events:auto}
 .dd a{position:absolute;left:0;opacity:0;pointer-events:none;transition:transform .7s var(--ease),opacity .7s ease}
 .dd a:nth-child(1){transform:translateY(calc(-50% - 2.67em + 1.3em));transition-delay:0s}
 .dd a:nth-child(2){transform:translateY(calc(-50% - 4.95em + 1.3em));transition-delay:.09s}
@@ -78,7 +78,7 @@ const body=document.body,views={a:document.getElementById("v-a"),b:document.getE
 function route(){const h=(location.hash||"#a").slice(1),k=views[h]?h:"a";
   for(const n in views)views[n].classList.toggle("on",n===k);
   body.dataset.v=k;document.getElementById("coll").classList.remove("open");if(k==="a")kick()}
-addEventListener("hashchange",route);route();
+addEventListener("hashchange",route);
 document.getElementById("coll").firstElementChild.addEventListener("click",e=>{if(matchMedia("(hover:none)").matches){const c=e.currentTarget.parentNode;if(!c.classList.contains("open")){e.preventDefault();c.classList.add("open")}}});
 
 /* page A: proximity-scrubbed ring animation */
@@ -102,9 +102,10 @@ function aim(x,y){if(body.dataset.v!=="a")return;
   target=ss(0,1,Math.min(1,Math.max(0,(1-Math.max(dx,dy))/.78)));kick()}
 addEventListener("pointermove",e=>aim(e.clientX,e.clientY),{passive:true});
 addEventListener("pointerdown",e=>aim(e.clientX,e.clientY),{passive:true});
-document.addEventListener("pointerleave",()=>{target=0;kick()});
+document.documentElement.addEventListener("pointerleave",()=>{target=0;kick()});addEventListener("blur",()=>{target=0;kick()});
 document.addEventListener("pointerup",e=>{if(e.pointerType==="touch"){target=0;kick()}});
 Promise.all(imgs.map(i=>i.decode().catch(()=>{}))).then(()=>{ready=true;draw()});
+route();
 </script>
 </body>
 </html>
