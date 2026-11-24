@@ -97,9 +97,9 @@ function tick(now){const dt=Math.max(.001,Math.min(.05,(now-last)/1000||.016));l
   if(ready)draw();raf=p===target?0:requestAnimationFrame(tick)}
 function kick(){if(!raf){last=performance.now();raf=requestAnimationFrame(tick)}}
 function aim(x,y){if(body.dataset.v!=="a")return;
-  const r=stage.getBoundingClientRect(),dx=Math.abs(x-(r.left+r.width/2))/(r.width*.17),dy=Math.abs(y-(r.top+r.height/2))/(r.height*.3);
+  const r=stage.getBoundingClientRect(),dx=Math.abs(x-(r.left+r.width/2))/(r.width*.17),dy=Math.abs(y-(r.top+r.height/2))/(r.height*.42);
   /* start zone: inside the John/Jane gap, inset by a margin; full overlap near the centre */
-  target=eio(Math.min(1,Math.max(0,(1-Math.max(dx,dy))/.45)));kick()}
+  target=eio(Math.min(1,Math.max(0,(1-Math.hypot(dx,dy))/.45)));kick()}
 addEventListener("pointermove",e=>aim(e.clientX,e.clientY),{passive:true});
 addEventListener("pointerdown",e=>aim(e.clientX,e.clientY),{passive:true});
 document.documentElement.addEventListener("pointerleave",()=>{target=0;kick()});addEventListener("blur",()=>{target=0;kick()});
